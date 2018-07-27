@@ -134,12 +134,12 @@ int output_new_password(FILE *fptr, const char *username, const char *password)
 	EVP_DigestFinal_ex(&context, hash, &hash_len);
 	EVP_MD_CTX_cleanup(&context);
 #else
-	context = EVP_MD_CTX_new();
+	context = EVP_MD_CTX_create();
 	EVP_DigestInit_ex(context, digest, NULL);
 	EVP_DigestUpdate(context, password, strlen(password));
 	EVP_DigestUpdate(context, salt, SALT_LEN);
 	EVP_DigestFinal_ex(context, hash, &hash_len);
-	EVP_MD_CTX_free(context);
+	EVP_MD_CTX_destroy(context);
 #endif
 
 	rc = base64_encode(hash, hash_len, &hash64);

@@ -971,13 +971,13 @@ int pw__digest(const char *password, const unsigned char *salt, unsigned int sal
 		return 1;
 	}
 
-	context = EVP_MD_CTX_new();
+	context = EVP_MD_CTX_create();
 	EVP_DigestInit_ex(context, digest, NULL);
 	EVP_DigestUpdate(context, password, strlen(password));
 	EVP_DigestUpdate(context, salt, salt_len);
 	/* hash is assumed to be EVP_MAX_MD_SIZE bytes long. */
 	EVP_DigestFinal_ex(context, hash, hash_len);
-	EVP_MD_CTX_free(context);
+	EVP_MD_CTX_destroy(context);
 #endif
 
 	return MOSQ_ERR_SUCCESS;
